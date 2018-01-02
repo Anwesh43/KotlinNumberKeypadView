@@ -44,7 +44,7 @@ class NumberKeypadView(ctx:Context):View(ctx) {
 
         }
         fun startUpdating(startcb:()->Unit) {
-
+            startcb()
         }
     }
     data class NumberKeyContainer(var w:Float,var h:Float) {
@@ -93,6 +93,24 @@ class NumberKeypadView(ctx:Context):View(ctx) {
                     }
 
                 }
+            }
+        }
+    }
+    data class State(var scale:Float = 0f,var deg:Float = 0f,var dir:Int = 0) {
+        fun update(stopcb:()->Unit) {
+            deg += 18*dir
+            scale = Math.sin(deg*Math.PI/180).toFloat()
+            if(deg > 180) {
+                deg = 0f
+                dir = 0
+                scale = 0f
+                stopcb()
+            }
+        }
+        fun startUpdating(startcb:()->Unit) {
+            if(dir == 0) {
+                dir = 1
+                startcb()
             }
         }
     }
