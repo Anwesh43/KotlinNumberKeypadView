@@ -120,6 +120,7 @@ class NumberKeypadView(ctx:Context):View(ctx) {
     }
     data class NumberKeyRenderer(var view:NumberKeypadView,var time:Int = 0) {
         var numberKeyContainer:NumberKeyContainer?=null
+        val animator = Animator(view)
         fun render(canvas:Canvas,paint:Paint) {
             if(time == 0) {
                 val w = canvas.width.toFloat()
@@ -129,12 +130,13 @@ class NumberKeypadView(ctx:Context):View(ctx) {
             numberKeyContainer?.draw(canvas,paint)
             time++
             numberKeyContainer?.update{
-
+                animator.stop()
             }
+            animator.animate()
         }
         fun handleTap(x:Float,y:Float) {
             numberKeyContainer?.handleTap(x,y,{
-
+                animator.startAnimation()
             })
         }
     }
@@ -158,7 +160,7 @@ class NumberKeypadView(ctx:Context):View(ctx) {
         }
         fun stop() {
             if(animated) {
-                animated = false 
+                animated = false
             }
         }
     }
