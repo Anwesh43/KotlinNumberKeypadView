@@ -22,6 +22,7 @@ class NumberKeypadView(ctx:Context):View(ctx) {
         return true
     }
     data class NumberKey(var i:Int,var x:Float,var y:Float,var r:Float) {
+        val state = State()
         fun draw(canvas:Canvas,paint:Paint) {
             canvas.save()
             canvas.translate(x,y)
@@ -35,16 +36,18 @@ class NumberKeypadView(ctx:Context):View(ctx) {
             canvas.save()
             canvas.scale(1f,1f)
             paint.color = Color.parseColor("#99BDBDBD")
-            canvas.drawCircle(0f,0f,r,paint)
+            canvas.drawCircle(0f,0f,r*state.scale,paint)
             canvas.restore()
             canvas.restore()
         }
         fun handleTap(x:Float,y:Float) = x>=this.x-r && x<=this.x+r && y>=this.y - r && y<=this.y+r
         fun update(stopcb:(Int)->Unit) {
-
+            state.update {
+                stopcb(i)
+            }
         }
         fun startUpdating(startcb:()->Unit) {
-            startcb()
+            state.startUpdating(startcb)
         }
     }
     data class NumberKeyContainer(var w:Float,var h:Float) {
