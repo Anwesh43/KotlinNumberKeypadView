@@ -138,4 +138,28 @@ class NumberKeypadView(ctx:Context):View(ctx) {
             })
         }
     }
+    data class Animator(var view:View,var animated:Boolean = false) {
+        fun animate() {
+            if(animated) {
+                try {
+                    Thread.sleep(50)
+                    view.invalidate()
+                }
+                catch(ex:Exception) {
+
+                }
+            }
+        }
+        fun startAnimation() {
+            if(!animated) {
+                animated = true
+                view.postInvalidate()
+            }
+        }
+        fun stop() {
+            if(animated) {
+                animated = false 
+            }
+        }
+    }
 }
