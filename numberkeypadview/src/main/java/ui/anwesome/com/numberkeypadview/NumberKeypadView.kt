@@ -3,6 +3,7 @@ package ui.anwesome.com.numberkeypadview
 /**
  * Created by anweshmishra on 02/01/18.
  */
+import android.app.Activity
 import android.content.*
 import android.view.*
 import android.graphics.*
@@ -162,6 +163,13 @@ class NumberKeypadView(ctx:Context):View(ctx) {
             if(animated) {
                 animated = false
             }
+        }
+    }
+    companion object {
+        fun create(activity:Activity):NumberKeypadView {
+            val view = NumberKeypadView(activity)
+            activity.setContentView(view)
+            return view
         }
     }
 }
