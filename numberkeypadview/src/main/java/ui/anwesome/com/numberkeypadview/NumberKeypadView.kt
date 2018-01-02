@@ -78,10 +78,11 @@ class NumberKeypadView(ctx:Context):View(ctx) {
             val tw = paint.measureText(text)
             canvas.drawText(text,w/2-tw/2,h/10,paint)
         }
-        fun update() {
+        fun update(stopcb: () -> Unit) {
             updatingKeys.forEach{
                 it.update{i ->
                     textBuilder.append(i)
+                    stopcb()
                 }
             }
         }
@@ -115,6 +116,26 @@ class NumberKeypadView(ctx:Context):View(ctx) {
                 dir = 1
                 startcb()
             }
+        }
+    }
+    data class NumberKeyRenderer(var view:NumberKeypadView,var time:Int = 0) {
+        var numberKeyContainer:NumberKeyContainer?=null
+        fun render(canvas:Canvas,paint:Paint) {
+            if(time == 0) {
+                val w = canvas.width.toFloat()
+                val h = canvas.height.toFloat()
+                numberKeyContainer = NumberKeyContainer(w,h)
+            }
+            numberKeyContainer?.draw(canvas,paint)
+            time++
+            numberKeyContainer?.update{
+
+            }
+        }
+        fun handleTap(x:Float,y:Float) {
+            numberKeyContainer?.handleTap(x,y,{
+
+            })
         }
     }
 }
