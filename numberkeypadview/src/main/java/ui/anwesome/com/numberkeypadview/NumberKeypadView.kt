@@ -31,10 +31,10 @@ class NumberKeypadView(ctx:Context):View(ctx) {
             paint.color = Color.parseColor("#212121")
             canvas.drawCircle(0f,0f,r,paint)
             paint.color = Color.WHITE
-            paint.textSize = r/3
+            paint.textSize = r
             val text = "$i"
             val tw = paint.measureText(text)
-            canvas.drawText("$i",-tw/2,r/2,paint)
+            canvas.drawText("$i",-tw/2,r/4,paint)
             canvas.save()
             canvas.scale(1f,1f)
             paint.color = Color.parseColor("#99BDBDBD")
@@ -84,7 +84,10 @@ class NumberKeypadView(ctx:Context):View(ctx) {
             updatingKeys.forEach{
                 it.update{i ->
                     textBuilder.append(i)
-                    stopcb()
+                    updatingKeys.remove(it)
+                    if(updatingKeys.size == 0) {
+                        stopcb()
+                    }
                 }
             }
         }
@@ -163,6 +166,7 @@ class NumberKeypadView(ctx:Context):View(ctx) {
         fun stop() {
             if(animated) {
                 animated = false
+                view.invalidate()
             }
         }
     }
